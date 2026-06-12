@@ -13,7 +13,7 @@ export async function getWorks(filters?: {
   sort?: string;
   search?: string;
 }): Promise<WorkWithRelations[]> {
-  const supabase = await createServerSupabase();
+  const supabase = createServerSupabase();
 
   let query = supabase.from("works").select(`
       *,
@@ -77,7 +77,7 @@ export async function getWorks(filters?: {
 
 // 获取单个作品（含标签和书评）
 export async function getWorkById(id: string): Promise<WorkWithRelations | null> {
-  const supabase = await createServerSupabase();
+  const supabase = createServerSupabase();
 
   const { data, error } = await supabase
     .from("works")
@@ -101,7 +101,7 @@ export async function getWorkById(id: string): Promise<WorkWithRelations | null>
 export async function createWork(
   workData: Partial<Omit<Work, "id" | "created_at" | "updated_at">> & { tags?: string[] }
 ): Promise<Work | null> {
-  const supabase = await createServerSupabase();
+  const supabase = createServerSupabase();
 
   const { tags, ...fields } = workData;
 
@@ -137,7 +137,7 @@ export async function updateWork(
   id: string,
   workData: Partial<Omit<Work, "id" | "created_at" | "updated_at">> & { tags?: string[] }
 ): Promise<Work | null> {
-  const supabase = await createServerSupabase();
+  const supabase = createServerSupabase();
 
   const { tags, ...fields } = workData;
 
@@ -172,7 +172,7 @@ export async function updateWork(
 
 // 删除作品
 export async function deleteWork(id: string): Promise<boolean> {
-  const supabase = await createServerSupabase();
+  const supabase = createServerSupabase();
 
   const { error } = await supabase.from("works").delete().eq("id", id);
 
@@ -190,7 +190,7 @@ export async function deleteWork(id: string): Promise<boolean> {
 
 // 获取标签列表（支持搜索提示）
 export async function getTags(query?: string): Promise<Tag[]> {
-  const supabase = await createServerSupabase();
+  const supabase = createServerSupabase();
 
   let dbQuery = supabase.from("tags").select("*").order("name");
 
@@ -211,7 +211,7 @@ export async function getTags(query?: string): Promise<Tag[]> {
 
 // 获取或创建标签（upsert）
 async function getOrCreateTag(name: string): Promise<string | null> {
-  const supabase = await createServerSupabase();
+  const supabase = createServerSupabase();
   const normalized = name.trim().toLowerCase();
 
   if (!normalized) return null;
@@ -247,7 +247,7 @@ async function getOrCreateTag(name: string): Promise<string | null> {
 
 // 设置作品的标签（先清空再设置）
 async function setWorkTags(workId: string, tagNames: string[]): Promise<void> {
-  const supabase = await createServerSupabase();
+  const supabase = createServerSupabase();
 
   // 删除旧的关联
   await supabase.from("work_tags").delete().eq("work_id", workId);
@@ -275,7 +275,7 @@ async function setWorkTags(workId: string, tagNames: string[]): Promise<void> {
 
 // 获取作品的书评列表
 export async function getReviews(workId: string): Promise<Review[]> {
-  const supabase = await createServerSupabase();
+  const supabase = createServerSupabase();
 
   const { data, error } = await supabase
     .from("reviews")
@@ -293,7 +293,7 @@ export async function getReviews(workId: string): Promise<Review[]> {
 
 // 添加书评
 export async function addReview(workId: string, content: string): Promise<Review | null> {
-  const supabase = await createServerSupabase();
+  const supabase = createServerSupabase();
 
   const { data, error } = await supabase
     .from("reviews")
@@ -311,7 +311,7 @@ export async function addReview(workId: string, content: string): Promise<Review
 
 // 删除书评
 export async function deleteReview(id: string): Promise<boolean> {
-  const supabase = await createServerSupabase();
+  const supabase = createServerSupabase();
 
   const { error } = await supabase.from("reviews").delete().eq("id", id);
 
@@ -328,7 +328,7 @@ export async function deleteReview(id: string): Promise<boolean> {
 // ============================================================
 
 export async function getFeed(date?: string): Promise<FeedItem[]> {
-  const supabase = await createServerSupabase();
+  const supabase = createServerSupabase();
 
   // 作品动态
   let worksQuery = supabase
@@ -407,7 +407,7 @@ export async function getFeed(date?: string): Promise<FeedItem[]> {
 
 // 获取有动态的日期列表（用于日历高亮）
 export async function getActiveDates(): Promise<string[]> {
-  const supabase = await createServerSupabase();
+  const supabase = createServerSupabase();
 
   const [worksResult, reviewsResult] = await Promise.all([
     supabase.from("works").select("created_at"),

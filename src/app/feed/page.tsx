@@ -16,7 +16,7 @@ export default async function FeedPage({
 }) {
   const { date } = await searchParams;
 
-  const supabase = await createServerSupabase();
+  const supabase = createServerSupabase();
 
   // 获取作品动态
   let worksQuery = supabase

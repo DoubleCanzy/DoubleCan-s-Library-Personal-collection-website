@@ -16,7 +16,7 @@ export default async function LibraryPage({
     ? tagsParam.split(",").map((t) => t.trim()).filter(Boolean)
     : [];
 
-  const supabase = await createServerSupabase();
+  const supabase = createServerSupabase();
 
   let query = supabase
     .from("works")

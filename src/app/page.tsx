@@ -9,7 +9,7 @@ export default async function HomePage() {
   let works: WorkWithRelations[] = [];
 
   try {
-    const supabase = await createServerSupabase();
+    const supabase = createServerSupabase();
     const { data } = await supabase
       .from("works")
       .select(`

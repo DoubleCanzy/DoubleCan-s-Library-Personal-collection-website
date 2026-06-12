@@ -10,7 +10,7 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const supabase = await createServerSupabase();
+  const supabase = createServerSupabase();
   const { data } = await supabase
     .from("works")
     .select("title")
@@ -31,7 +31,7 @@ export default async function WorkDetailPage({
 }) {
   const { id } = await params;
 
-  const supabase = await createServerSupabase();
+  const supabase = createServerSupabase();
   const { data, error } = await supabase
     .from("works")
     .select(`

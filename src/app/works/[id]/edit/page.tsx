@@ -14,7 +14,7 @@ export default async function EditWorkPage({
   const { id } = await params;
 
   // 获取作品数据
-  const supabase = await createServerSupabase();
+  const supabase = createServerSupabase();
   const { data, error } = await supabase
     .from("works")
     .select("*, tags:work_tags(tag:tags(*))")

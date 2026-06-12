@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
     const fileName = `${Date.now()}-${crypto.randomUUID()}.${ext}`;
 
     // 上传到 Supabase Storage
-    const supabase = await createServerSupabase();
+    const supabase = createServerSupabase();
     const buffer = Buffer.from(await file.arrayBuffer());
 
     const { error, data } = await supabase.storage
